@@ -66,9 +66,27 @@ def edit_student():
 
     save_data(data)
 
+import csv
+
+def export_report():
+    data = load_data()
+    if not data:
+        print("No data to export.")
+        return
+
+    with open("student_report.csv", "w", newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["Name", "Average", "Highest", "Lowest", "All Marks"])
+
+        for name, marks in data.items():
+            avg = sum(marks) / len(marks)
+            writer.writerow([name, f"{avg:.2f}", max(marks), min(marks), ', '.join(map(str, marks))])
+
+    print("Report exported to 'student_report.csv'")
+
 def main():
     while True:
-        print("\n MENU\n1. Add Student\n2. Show Report\n3. Edit Student\n4. Exit")
+        print("\n MENU\n1. Add Student\n2. Show Report\n3. Edit Student\n4. Export to CSV\n5. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -80,6 +98,8 @@ def main():
         elif choice == '3':
             edit_student()
         elif choice == '4':
+            export_report()
+        elif choice == '5':
             print("👋 Exiting... Peace out.")
             break
         else:
