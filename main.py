@@ -84,9 +84,48 @@ def export_report():
 
     print("Report exported to 'student_report.csv'")
 
+def import_data():
+    print("\nImport Options:\n1. JSON File\n2. CSV File")
+    choice = input("Choose file type to import: ")
+
+    if choice == '1':
+        filename = input("Enter JSON file name: ")
+        try:
+            with open(filename, 'r') as file:
+                new_data = json.load(file)
+        except Exception as e:
+            print(f"Failed to load JSON: {e}")
+            return
+    elif choice == '2':
+        filename = input("Enter CSV file name: ")
+        new_data = {}
+        try:
+            with open(filename, newline='') as csvfile:
+                reader = csv.reader(csvfile)
+                for row in reader:
+                    if len(row) < 2:
+                        continue
+                    name = row[0]
+                    try:
+                        marks = list(map(int, row[1:]))
+                        new_data[name] = marks
+                    except ValueError:
+                        print(f"Invalid marks for {name}, skipping.")
+        except Exception as e:
+            print(f"Failed to load CSV: {e}")
+            return
+    else:
+        print("Invalid choice.")
+        return
+
+    data = load_data()
+    data.update(new_data)
+    save_data(data)
+    print(f"Imported {len(new_data)} student(s) from {filename}.")
+
 def main():
     while True:
-        print("\n MENU\n1. Add Student\n2. Show Report\n3. Edit Student\n4. Export to CSV\n5. Exit")
+        print("\n MENU\n1. Add Student\n2. Show Report\n3. Edit Student\n4. Export to CSV\n5. Import Data\n6. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -100,6 +139,8 @@ def main():
         elif choice == '4':
             export_report()
         elif choice == '5':
+            import_data()
+        elif choice == '6':
             print("👋 Exiting... Peace out.")
             break
         else:
