@@ -19,6 +19,20 @@ def add_student(name, marks):
     save_data(data)
     print(f"✅ Added student: {name}")
 
+def calculate_grade(avg):
+    if avg>=90:
+        return 'A'
+    elif avg >=80:
+        return 'B'
+    elif avg>= 70:
+        return 'C'
+    elif avg>= 60:
+        return 'D'
+    elif avg>= 50:
+        return 'E'
+    else:
+        return 'F'
+
 def show_report():
     data = load_data()
     if not data:
@@ -27,7 +41,8 @@ def show_report():
 
     for name, marks in data.items():
         avg = sum(marks) / len(marks)
-        print(f"{name}: 📊 Avg: {avg:.2f} | 🔼 High: {max(marks)} | 🔽 Low: {min(marks)}")
+        grade = calculate_grade(avg)
+        print(f"{name}: 📊 Avg: {avg:.2f} | 🔼 High: {max(marks)} | 🔽 Low: {min(marks)} |  Grade: {grade}")
 
 def edit_student():
     data = load_data()
