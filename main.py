@@ -19,6 +19,15 @@ def add_student(name, marks):
     save_data(data)
     print(f"✅ Added student: {name}")
 
+def delete_student(name):
+    data = load_data()
+    if name in data:
+        del data[name]
+        save_data(data)
+        print(f"🗑️ Deleted student: {name}")
+    else:
+        print("❌ Student not found.")
+
 def show_report():
     data = load_data()
     if not data:
@@ -31,7 +40,7 @@ def show_report():
 
 def main():
     while True:
-        print("\n📘 MENU\n1. Add Student\n2. Show Report\n3. Exit")
+        print("\n📘 MENU\n1. Add Student\n2. Show Report\n3. Delete Student\n4. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -41,6 +50,9 @@ def main():
         elif choice == '2':
             show_report()
         elif choice == '3':
+            name = input("Enter student name to delete: ")
+            delete_student(name)
+        elif choice == '4':
             print("👋 Exiting... Peace out.")
             break
         else:
