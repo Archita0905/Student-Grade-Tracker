@@ -13,8 +13,32 @@ def save_data(data):
     with open(DATA_FILE, 'w') as file:
         json.dump(data, file, indent=4)
 
-def add_student(name, marks):
+def add_student():
     data = load_data()
+
+    while True:
+        name = input("Enter student name: ").strip()
+        if not name:
+            print("❌ Name cannot be empty. Please try again.")
+            continue
+        break
+
+    if name in data:
+        overwrite = input(f"⚠️ Student '{name}' already exists. Overwrite? (y/n): ").lower()
+        if overwrite != 'y':
+            print("❌ Student not added.")
+            return
+
+    while True:
+        try:
+            marks_input = input("Enter marks separated by space: ").strip()
+            if not marks_input:
+                raise ValueError("Empty input")
+            marks = list(map(int, marks_input.split()))
+            break
+        except ValueError:
+            print("❌ Invalid marks input. Please enter integers separated by space.")
+
     data[name] = marks
     save_data(data)
     print(f"✅ Added student: {name}")
@@ -35,9 +59,7 @@ def main():
         choice = input("Enter your choice: ")
 
         if choice == '1':
-            name = input("Enter student name: ")
-            marks = list(map(int, input("Enter marks separated by space: ").split()))
-            add_student(name, marks)
+            add_student()
         elif choice == '2':
             show_report()
         elif choice == '3':
